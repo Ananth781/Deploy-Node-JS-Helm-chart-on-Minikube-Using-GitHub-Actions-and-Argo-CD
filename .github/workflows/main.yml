@@ -40,7 +40,7 @@ jobs:
 
       - name: Update values.yaml
         run: |
-          cd nodeapp  # Adjusted to cd into 'nodeapp' directory
+          cd nodeapp  # Replace with your correct directory if needed
           sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' values.yaml 
           git config --global user.name 'devopshint'
           git config --global user.email 'devopshint@gmail.com'
