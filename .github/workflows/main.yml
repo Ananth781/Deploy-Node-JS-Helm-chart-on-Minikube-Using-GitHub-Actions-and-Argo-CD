@@ -33,7 +33,7 @@ jobs:
       - name: Build Docker image
         run: |
           set -euxo pipefail
-          docker build -t node-app:latest .
+          docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
       - name: Push Docker image
         run: |
