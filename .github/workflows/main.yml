@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKERHUB_KEY: ${{ secrets.DOCKER_KEY }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  # Replace with Docker Hub access token or password
   IMAGE_NAME: node-app
 
 jobs:
@@ -25,22 +25,22 @@ jobs:
         uses: docker/login-action@v1
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ env.DOCKERHUB_KEY }}
+          password: ${{ env.DOCKERHUB_PASSWORD }}
 
       - name: Build Docker image
         run: |
           set -euxo pipefail
-          docker build -t node-app:latest .
-          docker images  
+          docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest .
+          docker images  # Optional: List Docker images for debugging
 
       - name: Push Docker image
         run: |
           set -euxo pipefail
-          docker push ananth305/getting-started
+          docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Update values.yaml
         run: |
-          cd nodeapp  # Adjust if necessary
+          cd helm  # Adjust if necessary
           sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' values.yaml 
           git config --global user.name 'devopshint'
           git config --global user.email 'devopshint@gmail.com'
