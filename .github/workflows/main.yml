@@ -27,6 +27,9 @@ jobs:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_KEY }}
 
+      - name: Debug Docker info
+        run: docker info
+
       - name: Build Docker image
         run: |
           set -euxo pipefail
@@ -39,7 +42,7 @@ jobs:
 
       - name: Update values.yaml
         run: |
-          cd helm
+          cd nodeapp
           sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' values.yaml 
           git config --global user.name 'devopshint'
           git config --global user.email 'devopshint@gmail.com'
